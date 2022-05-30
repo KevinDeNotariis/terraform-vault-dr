@@ -31,7 +31,7 @@ pipeline {
   }
   post {
     always {
-      sh 'rm -rf terraform/.terraform'
+      sh 'rm -rf test/ terraform/'
     }
   }
 }

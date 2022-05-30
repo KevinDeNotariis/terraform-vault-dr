@@ -41,4 +41,4 @@ install/nodejs:
 # Test Targets
 # -----------------------------------------------------------------------------------
 test/all:
-	cd terraform/test/ && go mod tidy -compat=1.17 && go test -count 1 -v -timeout 60m
+	cd test/ && go mod tidy -compat=1.17 && go test -count 1 -v -timeout 60m

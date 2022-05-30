@@ -17,5 +17,5 @@ provider "aws" {
 }
 
 provider "vault" {
-  address = var.VAULT_ADDRESS
+  address = var.vault_address
 }

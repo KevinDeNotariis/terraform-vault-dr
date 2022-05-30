@@ -4,7 +4,6 @@ pipeline {
       image 'centos:my-centos'
       args '-u 0:0 --privileged'
     }
-
   }
   stages {
     stage('Install Dependencies') {
@@ -18,7 +17,6 @@ pipeline {
         script {
           env.VAULT_TOKEN = input(message: 'Insert Vault Token', id: 'VAULT_TOKEN', parameters: [string(name: 'Token')])
         }
-
         sh 'make test/all'
       }
     }
@@ -28,6 +26,5 @@ pipeline {
     always {
       sh 'rm -rf terraform/.terraform'
     }
-
   }
 }

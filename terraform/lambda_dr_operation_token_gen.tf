@@ -72,6 +72,6 @@ module "lambda_dr_operation_token_gen" {
     DR_OPERATION_TOKEN_VAULT_ROLE_NAME = local.dr_operation_token_role_name
     AWS_AUTH_ROLE                      = local.dr_operation_token_role_name
     AWS_AUTH_LAMBDA_NAME               = module.lambda_aws_auth.lambda_function_name
-    VAULT_ENDPOINT                     = local.vault_endpoint
+    VAULT_ENDPOINT                     = var.vault_endpoint
   }
 }

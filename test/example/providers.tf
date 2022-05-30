@@ -17,5 +17,5 @@ provider "aws" {
 }
 
 provider "vault" {
-  address = var.vault_address
+  address = "https://${var.vault_endpoint}"
 }

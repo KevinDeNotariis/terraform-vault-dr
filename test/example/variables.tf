@@ -1,14 +1,14 @@
 variable "environment" {
   description = "The environment to deploy to"
-  type = string
+  type        = string
 }
 
 variable "identifier" {
   description = "Unique identifier for the deploy"
-  type = string
+  type        = string
 }
 
-variable "vault_address" {
-  description = "The Address of the vault cluster (with the protocol)"
+variable "vault_endpoint" {
+  description = "The endpoint of the vault cluster (without the protocol)"
   type        = string
 }

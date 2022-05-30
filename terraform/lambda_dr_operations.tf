@@ -29,7 +29,7 @@ module "lambda_dr_operations" {
 
   environment_variables = {
     SECRET_NAME        = local.dr_operation_token_name
-    ENDPOINT_CLUSTER_1 = local.vault_endpoint_primary
-    ENDPOINT_CLUSTER_2 = local.vault_endpoint_secondary
+    ENDPOINT_CLUSTER_1 = var.vault_endpoint_primary
+    ENDPOINT_CLUSTER_2 = var.vault_endpoint_secondary
   }
 }

@@ -33,9 +33,9 @@ module "lambda_dns_switch" {
   policy_json        = data.aws_iam_policy_document.lambda_dns_switch.json
 
   environment_variables = {
-    VAULT_ENDPOINT     = local.vault_endpoint
-    ENDPOINT_CLUSTER_1 = local.vault_endpoint_primary
-    ENDPOINT_CLUSTER_2 = local.vault_endpoint_secondary
-    HOSTED_ZONE_NAME   = local.hosted_zone_name
+    VAULT_ENDPOINT     = var.vault_endpoint
+    ENDPOINT_CLUSTER_1 = var.vault_endpoint_primary
+    ENDPOINT_CLUSTER_2 = var.vault_endpoint_secondary
+    HOSTED_ZONE_NAME   = var.hosted_zone_name
   }
 }

@@ -15,6 +15,6 @@ module "lambda_aws_auth" {
   publish                           = true
 
   environment_variables = {
-    VAULT_ENDPOINT = local.vault_endpoint
+    VAULT_ENDPOINT = var.vault_endpoint
   }
 }

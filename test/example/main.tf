@@ -1,5 +1,5 @@
 module "lambdas" {
-  source = "../../lambdas"
+  source = "../../terraform"
 
   environment = var.environment
   identifier  = var.identifier

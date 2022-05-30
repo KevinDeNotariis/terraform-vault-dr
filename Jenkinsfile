@@ -13,6 +13,9 @@ pipeline {
     }
 
     stage('Run test') {
+      environment {
+        VAULT_ADDRESS = "vault-dev.hashiconf.demo"
+      }
       steps {
         script {
           env.VAULT_TOKEN = input(message: 'Insert Vault Token', id: 'VAULT_TOKEN', parameters: [string(name: 'Token')])

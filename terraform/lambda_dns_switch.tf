@@ -8,6 +8,7 @@ data "aws_iam_policy_document" "lambda_dns_switch" {
       "route53:ListResourceRecordSets",
       "route53:ChangeResourceRecordSets"
     ]
+    #checkov:skip=CKV_AWS_111: For demo purpose we use * here
     resources = ["*"]
   }
 }

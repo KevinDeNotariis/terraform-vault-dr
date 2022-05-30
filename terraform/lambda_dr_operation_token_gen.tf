@@ -22,6 +22,7 @@ data "aws_iam_policy_document" "lambda_dr_operation_token_gen" {
 # Secrets Manager
 # -----------------------------------------------------------------------------------
 resource "aws_secretsmanager_secret" "dr_operation_token" {
+  #checkov:skip=CKV_AWS_149: For demo purpose we use the default KMS
   name = local.dr_operation_token_name
 }
 

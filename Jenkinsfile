@@ -5,7 +5,18 @@ pipeline {
       args '-u 0:0 --privileged'
     }
   }
+
   stages {
+    stage("Gather Vault Token and Vault Address") {
+      steps {
+        script {
+          env.VAULT_TOKEN = input(message: 'Insert Vault Token', id: 'VAULT_TOKEN', parameters: [string(name: 'Token')])
+          env.VAULT_ADDRESS = input(message: 'Insert the Vault Address', id: 'VAULT_ADDRESS', parameters: [string(name: 'Address')])
+          env.VAULT_SKIP_VERIFY = "true"
+        }
+      }
+    }
+
     stage('Install Dependencies') {
       steps {
         sh 'make install-dependencies'
@@ -13,17 +24,10 @@ pipeline {
     }
 
     stage('Run test') {
-      environment {
-        VAULT_ADDRESS = "vault-dev.hashiconf.demo"
-      }
       steps {
-        script {
-          env.VAULT_TOKEN = input(message: 'Insert Vault Token', id: 'VAULT_TOKEN', parameters: [string(name: 'Token')])
-        }
         sh 'make test/all'
       }
     }
-
   }
   post {
     always {

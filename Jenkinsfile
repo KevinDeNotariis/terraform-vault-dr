@@ -11,7 +11,7 @@ pipeline {
       steps {
         script {
           env.VAULT_TOKEN = input(message: 'Insert Vault Token', id: 'VAULT_TOKEN', parameters: [string(name: 'Token')])
-          env.VAULT_ADDRESS = input(message: 'Insert the Vault Address', id: 'VAULT_ADDRESS', parameters: [string(name: 'Address')])
+          env.VAULT_ENDPOINT = input(message: 'Insert the Vault Endpoint', id: 'VAULT_ENDPOINT', parameters: [string(name: 'Address')])
           env.VAULT_SKIP_VERIFY = "true"
         }
       }

@@ -15,9 +15,12 @@ resource "vault_token_auth_backend_role" "dr_operation_token" {
 # -----------------------------------------------------------------------------------
 # Backend Role for the AWS Auth Method
 # -----------------------------------------------------------------------------------
+data "vault_auth_backend" "aws" {
+  path = "aws"
+}
 
 resource "vault_aws_auth_backend_role" "lambdas" {
-  backend                  = "aws"
+  backend                  = vault_auth_backend.aws.path
   role                     = local.dr_operation_token_role_name
   auth_type                = "iam"
   token_ttl                = 300

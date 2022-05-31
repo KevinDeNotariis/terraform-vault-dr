@@ -7,7 +7,7 @@ pipeline {
   }
 
   stages {
-    stage("Gather Vault Token and Vault Address") {
+    stage("Gather Vault Token") {
       steps {
         script {
           env.VAULT_TOKEN = input(message: 'Insert Vault Token', id: 'VAULT_TOKEN', parameters: [string(name: 'Token')])

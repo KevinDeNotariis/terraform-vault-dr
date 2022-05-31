@@ -51,63 +51,46 @@ def get_primary():
     Returns the NEW Primary Cluster
     """
 
-    try:
-        # Obtain status code from Vault /sys/health API endpoint
-        endpoint_response_code = requests.get(
-            f"https://{ENDPOINT_CLUSTER_1}/v1/sys/health",
-            params="perfstandbyok=true",
-            verify=False,
-            timeout=5
-        ).status_code
+    primary = ""
+    for cluster in (ENDPOINT_CLUSTER_1, ENDPOINT_CLUSTER_2):
+        logger.info(f"Checking endpoint {cluster}")
+        try:
+            primary = check_endpoint(cluster)
 
-        if endpoint_response_code == 200:
-            # Endpoint responds as primary
+            if primary != "":
+                return primary
+        except Exception as e:
             logger.info(
-                f"Endpoint {ENDPOINT_CLUSTER_1} responds as Primary - Status Code: {endpoint_response_code}")
-            return ENDPOINT_CLUSTER_1
-        elif endpoint_response_code == 472:
-            # Endpoint responds as DR / Standby
-            logger.info(
-                f"Endpoint {ENDPOINT_CLUSTER_1} responds as DR - Status Code: {endpoint_response_code}")
-        else:
-            # Error code or status unknown
-            logger.info(
-                f"Unknown response from Vault endpoint {ENDPOINT_CLUSTER_1} - Status Code: {endpoint_response_code}")
-    except Exception as e:
+                f"Something happened when checking endpoint {cluster}")
+            logger.error(e)
+
+    raise Exception("No endpoint responded as Primary or responded at all")
+
+
+def check_endpoint(endpoint):
+    endpoint_response_code = requests.get(
+        f"https://{endpoint}/v1/sys/health",
+        params="perfstandbyok=true",
+        verify=False,
+        timeout=5
+    ).status_code
+
+    if endpoint_response_code == 200:
+        # Endpoint responds as primary
         logger.info(
-            f"Something happened when checking endpoint {ENDPOINT_CLUSTER_1}")
-        logger.error(e)
-
-    logger.info(f"Checking other Endpoint")
-
-    try:
-        endpoint_response_code = requests.get(
-            f"https://{ENDPOINT_CLUSTER_2}/v1/sys/health",
-            params="perfstandbyok=true",
-            verify=False,
-            timeout=5
-        ).status_code
-
-        if endpoint_response_code == 200:
-            # Endpoint responds as primary
-            logger.info(
-                f"Endpoint {ENDPOINT_CLUSTER_2} responds as Primary - Status Code: {endpoint_response_code}")
-            return ENDPOINT_CLUSTER_2
-        elif endpoint_response_code == 472:
-            # Endpoint responds as DR / Standby
-            logger.info(
-                f"Endpoint {ENDPOINT_CLUSTER_2} responds as DR - Status Code: {endpoint_response_code}")
-        else:
-            # Error code or status unknown
-            logger.info(
-                f"Unknown response from Vault endpoint {ENDPOINT_CLUSTER_2} - Status Code: {endpoint_response_code}")
-            logger.info("Cluster is probabily down")
-    except Exception as e:
+            f"Endpoint {endpoint} responds as Primary - Status Code: {endpoint_response_code}")
+        return endpoint
+    elif endpoint_response_code == 472:
+        # Endpoint responds as DR / Standby
         logger.info(
-            f"Something happened when checking endpoint {ENDPOINT_CLUSTER_1}")
-        logger.error(e)
+            f"Endpoint {endpoint} responds as DR - Status Code: {endpoint_response_code}")
+    else:
+        # Error code or status unknown
+        logger.info(
+            f"Unknown response from Vault endpoint {endpoint} - Status Code: {endpoint_response_code}")
+        logger.info("Cluster is probabily down")
 
-    raise Exception("No endpoint respond as Primary or respond at all")
+    return ""
 
 
 def get_hosted_zone_id():

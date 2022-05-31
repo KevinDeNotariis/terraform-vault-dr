@@ -33,19 +33,34 @@ class DrOperations {
         ? this.cluster_1
         : this.cluster_2;
       console.log(`  --> Primary ${this.primaryEndpoint}`);
-      this.secondaryEndpoint = this.primaryEndpoint === this.cluster_1 ? this.cluster_2 : this.cluster_1;
-      console.log(`  --> Secondary ${this.secondaryEndpoint}`);
     } catch (err) {
       console.log(`${this.cluster_1} is down, setting ${this.cluster_2} as current secondary to be promoted`);
       try {
+        // Before setting the cluster_2 as secondary, we need to make sure that it is alive
         await this.isEndpointPrimary({ endpoint: this.cluster_2 });
       } catch (err) {
         console.log(`${this.cluster_2} also seems to not be reachable`);
         throw err;
       }
       this.primaryEndpoint = this.cluster_1;
-      this.secondaryEndpoint = this.cluster_1;
+      this.secondaryEndpoint = this.cluster_2;
     }
+
+    // If we checked the REAL primary and it is alive, then we need to check the secondary to ensure
+    // that it is alive too, otherwise we might demote the primary without promoting the secondary
+    if (this.primaryEndpoint === this.cluster_1) {
+      try {
+        await this.isEndpointPrimary({ endpoint: this.cluster_2 });
+      } catch (err) {
+        // If the secondary is down, we throw an error.. something is wrong.
+        console.log(err);
+        throw err;
+      }
+    }
+
+    this.secondaryEndpoint = this.primaryEndpoint === this.cluster_1 ? this.cluster_2 : this.cluster_1;
+
+    console.log(`  --> Secondary ${this.secondaryEndpoint}`);
   }
 
   async enableReplication({ endpoint }) {

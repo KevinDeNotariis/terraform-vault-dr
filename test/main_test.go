@@ -36,7 +36,6 @@ func initialDeploy(t *testing.T, workingDir string, identifier string) {
 		Vars: map[string]interface{}{
 			"environment": "test",
 			"identifier": identifier,
-			"vault_endpoint": os.Getenv("VAULT_ENDPOINT"),
 		},
 	})
 

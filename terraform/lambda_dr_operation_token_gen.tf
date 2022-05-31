@@ -8,12 +8,7 @@ data "aws_iam_policy_document" "lambda_dr_operation_token_gen" {
   }
 
   statement {
-    actions = [
-      "secretsmanager:GetSecretValue",
-      "secretsmanager:PutSecretValue",
-      "secretsmanager:DescribeSecret",
-      "secretsmanager:CreateSecret"
-    ]
+    actions = ["secretsmanager:PutSecretValue"]
     resources = [aws_secretsmanager_secret.dr_operation_token.arn]
   }
 }

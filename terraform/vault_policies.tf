@@ -20,7 +20,7 @@ resource "vault_policy" "dr_operation_token" {
 
 data "vault_policy_document" "aws_auth_method" {
   rule {
-    path         = "auth/token/create/${local.dr_operation_token_name}"
+    path         = "auth/token/create/${local.dr_operation_token_role_name}"
     capabilities = ["create", "update"]
   }
 }

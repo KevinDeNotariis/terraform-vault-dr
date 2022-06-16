@@ -1,11 +1,12 @@
 const got = require("got");
 
 class DrOperations {
-  constructor({ token, apiVersion = "v1", cluster_1, cluster_2 }) {
+  constructor({ token, apiVersion = "v1", cluster_1, cluster_2, tls_verify = false }) {
     this.token = token;
     this.apiVersion = apiVersion;
     this.cluster_1 = cluster_1;
     this.cluster_2 = cluster_2;
+    this.tls_verify = tls_verify;
   }
 
   async isEndpointPrimary({ endpoint }) {
@@ -16,6 +17,7 @@ class DrOperations {
     try {
       const res = await got(url, {
         method: "GET",
+        rejectUnauthorized: this.tls_verify,
       });
       return res.statusCode !== drSecondaryCode;
     } catch (err) {
@@ -73,6 +75,7 @@ class DrOperations {
         headers: {
           "X-Vault-Token": this.token,
         },
+        rejectUnauthorized: this.tls_verify,
       }).json();
 
       console.log("  --> Replication Enabled");
@@ -93,6 +96,7 @@ class DrOperations {
         headers: {
           "X-Vault-Token": this.token,
         },
+        rejectUnauthorized: this.tls_verify,
         body: JSON.stringify(body),
       }).json();
 
@@ -114,6 +118,7 @@ class DrOperations {
         headers: {
           "X-Vault-Token": this.token,
         },
+        rejectUnauthorized: this.tls_verify,
         body: JSON.stringify(body),
       }).json();
 
@@ -135,6 +140,7 @@ class DrOperations {
         headers: {
           "X-Vault-Token": this.token,
         },
+        rejectUnauthorized: this.tls_verify,
       }).json();
 
       console.log("  --> Cluster Demoted");
@@ -196,6 +202,7 @@ class DrOperations {
         headers: {
           "X-Vault-Token": this.token,
         },
+        rejectUnauthorized: this.tls_verify,
         body: JSON.stringify(body),
       }).json();
 
@@ -221,6 +228,7 @@ class DrOperations {
         headers: {
           "X-Vault-Token": this.token,
         },
+        rejectUnauthorized: this.tls_verify,
         body: JSON.stringify(body),
       }).json();
 

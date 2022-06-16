@@ -24,7 +24,9 @@ pipeline {
 
     stage('Run test') {
       steps {
-        sh 'make test/all'
+        withAWS(region: 'us-east-1', credentials: 'my-aws-credentials') {
+          sh 'make test/all'
+        }
       }
     }
   }
